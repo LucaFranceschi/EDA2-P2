@@ -52,5 +52,9 @@ void printPostOrder(Node *node);
 
 void delete(Tree t, char *word);
 
+Node* find_parent_of(Node* node, Node* child);
+
+Node* find_max(Node* node);
+
 #endif /* TREE_H */
 

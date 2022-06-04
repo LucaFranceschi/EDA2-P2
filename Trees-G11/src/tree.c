@@ -74,18 +74,36 @@ bool insert_into_tree(Tree *t, char *word) {
 }
 
 char *find_in_tree(Tree *t, char *word) {
-
     Node *elem = findNode(t->root, word);
     return elem->data; //&?
 }
 
 Node* deleteNode(Node *root, char *word){ //return the root
     Node* elem = findNode(root, word);
-    if (elem != NULL){
-        if (elem->left == NULL && elem->right == NULL){
-            free(elem);// ni idea
-        }
-    } else return NULL;
+    Node* parent = find_parent_of(root, elem);
+
+    if (elem->left == NULL && elem->right == NULL){ // is leaf
+        if (parent->left == elem){
+            parent->left = NULL;
+        } else parent->right = NULL;
+
+    } else if (elem->left != NULL && elem->right != NULL){ // has two children
+        Node* substitute = find_max(elem->left);
+        strcpy(elem->data, substitute->data);
+        deleteNode(elem->left, substitute->data);
+
+    } else if(elem->left != NULL){ // has left child
+        if (parent->left == elem){
+            parent->left = elem->left;
+        } else parent->right = elem->left;
+
+    } else { // has right child
+        if (parent->left == elem){
+            parent->left = elem->right;
+        } else parent->right = elem->right;
+    }
+    free(elem);
+    return root;
 }
 
 void print_tree_size(Tree *t) {
@@ -102,4 +120,21 @@ void printPostOrder(Node *node) {
     // YOUR CODE HERE
 }
 
-
+Node* find_parent_of(Node* node, Node* child){
+    if (node != NULL){
+        if (node->left == child || node->right == child){
+            return node;
+        } else if(strcmp(child->data, node->data) > 0){
+            return find_parent_of(node->right, child);
+        } else {
+            return find_parent_of(node->left, child);
+        }
+    } else return NULL;
+}
+Node* find_max(Node* node){
+    if (node->right == NULL){
+        return node;
+    } else {
+        return find_max(node->right);
+    }
+}
