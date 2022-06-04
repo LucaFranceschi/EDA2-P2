@@ -81,29 +81,48 @@ char *find_in_tree(Tree *t, char *word) {
 Node* deleteNode(Node *root, char *word){ //return the root
     Node* elem = findNode(root, word);
     Node* parent = find_parent_of(root, elem);
+    Node* new_root = root;
 
-    if (elem->left == NULL && elem->right == NULL){ // is leaf
-        if (parent->left == elem){
-            parent->left = NULL;
-        } else parent->right = NULL;
+    bool is_root;
+    if (elem == root){
+        is_root = true;
+    } else is_root = false;
 
-    } else if (elem->left != NULL && elem->right != NULL){ // has two children
-        Node* substitute = find_max(elem->left);
+    if (elem->left == NULL && elem->right == NULL){ // if is leaf
+        if (!is_root){
+            if (parent->left == elem) {
+                parent->left = NULL;
+            } else parent->right = NULL;
+        } else {
+            new_root = NULL;
+        }
+
+    } else if (elem->left != NULL && elem->right != NULL){ // if has two children
+        Node* substitute = find_max(elem->left); // find inorder predecessor
         strcpy(elem->data, substitute->data);
-        deleteNode(elem->left, substitute->data);
+        deleteNode(elem->left, substitute->data); // can be leaf or have left child
 
-    } else if(elem->left != NULL){ // has left child
-        if (parent->left == elem){
-            parent->left = elem->left;
-        } else parent->right = elem->left;
+    } else if(elem->left != NULL){ // if has left child
+        if (!is_root){
+            if (parent->left == elem){
+                parent->left = elem->left;
+            } else parent->right = elem->left;
+        } else {
+            new_root = elem->left;
+        }
 
-    } else { // has right child
-        if (parent->left == elem){
-            parent->left = elem->right;
-        } else parent->right = elem->right;
+    } else { // if has right child
+        if (!is_root){
+            if (parent->left == elem){
+                parent->left = elem->right;
+            } else parent->right = elem->right;
+        } else {
+            new_root = elem->right;
+        }
+
     }
     free(elem);
-    return root;
+    return new_root;
 }
 
 void print_tree_size(Tree *t) {
