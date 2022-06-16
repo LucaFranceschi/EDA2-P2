@@ -43,11 +43,9 @@ Node *insertNode(Node *node, char *word) {
         node = createNode(word);
     } else {
         if (strcmp(word, node->data) > 0) {
-            //node->right = createNode(word);
-            return insertNode(node->right, word);
+            node->right = insertNode(node->right, word);
         } else if (strcmp(word, node->data) < 0) {
-            //node->left = createNode(word);
-            return insertNode(node->left, word);
+            node->left = insertNode(node->left, word);
         }
     }
     return node;
@@ -67,62 +65,39 @@ Node *findNode(Node *node, char *word) {
 
 bool insert_into_tree(Tree *t, char *word) {
     if (findNode(t->root, word) == NULL){
-        insertNode(t->root, word);
+        t->root = insertNode(t->root, word);
         t->size++;
         return true;
     } else return false;
 }
 
-char *find_in_tree(Tree *t, char *word) {
+Node *find_in_tree(Tree *t, char *word) {
     Node *elem = findNode(t->root, word);
-    return elem->data; //&?
+    return elem; //&?
 }
 
-Node* deleteNode(Node *root, char *word){ //return the root
-    Node* elem = findNode(root, word);
-    Node* parent = find_parent_of(root, elem);
-    Node* new_root = root;
-
-    bool is_root;
-    if (elem == root){
-        is_root = true;
-    } else is_root = false;
-
-    if (elem->left == NULL && elem->right == NULL){ // if is leaf
-        if (!is_root){
-            if (parent->left == elem) {
-                parent->left = NULL;
-            } else parent->right = NULL;
+Node* deleteNode(Node *root, char *word){
+    if (root == NULL) return NULL;
+    if (strcmp(word,root->data) > 0){
+        root->right = deleteNode(root->right, word);
+    } else if(strcmp(word, root->data) < 0){
+        root->left = deleteNode(root->left, word);
+    } else{
+        if (root->left == NULL) {
+            Node* aux = root->right;
+            free(root);
+            return aux;
+        } else if (root->right == NULL) {
+            Node* aux = root->left;
+            free(root);
+            return aux;
         } else {
-            new_root = NULL;
+            Node* aux = find_max(root->left);
+            strcpy(root->data, aux->data);
+            root->left = deleteNode(root->left, aux->data);
         }
-
-    } else if (elem->left != NULL && elem->right != NULL){ // if has two children
-        Node* substitute = find_max(elem->left); // find inorder predecessor
-        strcpy(elem->data, substitute->data);
-        deleteNode(elem->left, substitute->data); // can be leaf or have left child
-
-    } else if(elem->left != NULL){ // if has left child
-        if (!is_root){
-            if (parent->left == elem){
-                parent->left = elem->left;
-            } else parent->right = elem->left;
-        } else {
-            new_root = elem->left;
-        }
-
-    } else { // if has right child
-        if (!is_root){
-            if (parent->left == elem){
-                parent->left = elem->right;
-            } else parent->right = elem->right;
-        } else {
-            new_root = elem->right;
-        }
-
     }
-    free(elem);
-    return new_root;
+    return root;
 }
 
 void print_tree_size(Tree *t) {
@@ -130,13 +105,25 @@ void print_tree_size(Tree *t) {
 }
 
 void printInOrder(Node *node) {
-    // YOUR CODE HERE
+    if (node != NULL) {
+        printInOrder(node->left);
+        printf("%s\n", node->data);
+        printInOrder(node->right);
+    }
 }
 void printPreOrder(Node *node) {
-    // YOUR CODE HERE
+    if (node != NULL) {
+        printf("%s\n", node->data);
+        printPreOrder(node->left);
+        printPreOrder(node->right);
+    }
 }
 void printPostOrder(Node *node) {
-    // YOUR CODE HERE
+    if (node != NULL) {
+        printPostOrder(node->left);
+        printPostOrder(node->right);
+        printf("%s\n", node->data);
+    }
 }
 
 Node* find_parent_of(Node* node, Node* child){

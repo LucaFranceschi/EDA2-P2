@@ -39,7 +39,7 @@ bool insert_into_tree(Tree *t, char *word);
 
 Node *createNode(char *word);
 
-char* find_in_tree(Tree *t, char *word);
+Node* find_in_tree(Tree *t, char *word);
 
 Node* insertNode(Node *node, char *word);
 

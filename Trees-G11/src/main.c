@@ -219,7 +219,9 @@ void benchmarking(){
     */
     clock_t start = clock();
 
-    // YOUR CODE HERE
+    for (int i = 0; i < nbwords; i++) {
+        find_in_tree(&dictionary1, words[i]);
+    }
 
     clock_t end = clock();
     printf("Execution time 1: %f seconds\n", (double)(end-start)/CLOCKS_PER_SEC);
@@ -229,7 +231,9 @@ void benchmarking(){
     */
     start = clock();
 
-    // YOUR CODE HERE
+    for (int i = 0; i < nbwords; i++) {
+        find_in_tree(&dictionary2, words[i]);
+    }
 
     end = clock();
     printf("Execution time 2: %f seconds\n", (double)(end-start)/CLOCKS_PER_SEC);
