@@ -1,3 +1,3 @@
-C:/Users/alexg/CLionProjects/EDA2-P2/Trees-G11/cmake-build-debug/CMakeFiles/Lab2.dir
-C:/Users/alexg/CLionProjects/EDA2-P2/Trees-G11/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/alexg/CLionProjects/EDA2-P2/Trees-G11/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/lukovsky/CLionProjects/EDA2-P2/Trees-G11/cmake-build-debug/CMakeFiles/Lab2.dir
+/home/lukovsky/CLionProjects/EDA2-P2/Trees-G11/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/lukovsky/CLionProjects/EDA2-P2/Trees-G11/cmake-build-debug/CMakeFiles/rebuild_cache.dir
