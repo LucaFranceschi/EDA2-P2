@@ -32,9 +32,16 @@ void candidates_by_insertion(char* word, Tree *d, Tree *suggestions) {
 
 void candidates_by_deletion(char* word, Tree *d, Tree *suggestions) {
     for (int i = 0; i < strlen(word); ++i) {
+        // DELETING ONE CHAR
         char* candidate = delete_char_in_pos(word, i);
         if (find_in_tree(d, candidate) != NULL && strcmp(candidate, "") != 0){
             insert_into_tree(suggestions, candidate);
+        }
+
+        // DELETING TWO CHARS
+        char* candidate2 = delete_char_in_pos(candidate, i);
+        if (find_in_tree(d, candidate2) != NULL && strcmp(candidate2, "") != 0){
+            insert_into_tree(suggestions, candidate2);
         }
     }
 }
@@ -76,10 +83,9 @@ void generate_candidates(char *word, Tree *dictionary, Tree *substitutes) {
 char* delete_char_in_pos(char* word, int pos){
     //new word must be initialized but empty ""
     unsigned long len = strlen(word);
-    char* new_word = (char*) malloc(sizeof(char)*len); // original length - deleted char + null == original length
-    strcpy(new_word, "\0");
-    //char* new_word = "";
     if (len>0){
+        char* new_word = (char*) malloc(sizeof(char)*len); // original length - deleted char + null == original length
+        strcpy(new_word, "\0");
         for (int i = 0; i < len; i++){
             if (i != pos){
                 char c = word[i];
@@ -94,10 +100,9 @@ char* delete_char_in_pos(char* word, int pos){
 
 char* insert_char_in_pos(char* word, int pos, char ch){
     unsigned long len = strlen(word);
-    char* new_word = (char*) malloc(sizeof(char)*(len+2)); // original length + char + null = original length + 2
-    strcpy(new_word, "\0");
-    //char* new_word = "";
     if (len>0){
+        char* new_word = (char*) malloc(sizeof(char)*(len+2)); // original length + char + null = original length + 2
+        strcpy(new_word, "\0");
         for (int i = 0; i < len+1; i++){
             char c;
             if (i == pos){
@@ -115,9 +120,9 @@ char* insert_char_in_pos(char* word, int pos, char ch){
 
 char* swap_with_consecutive_char(char* word, int pos){
     unsigned long len = strlen(word);
-    char* new_word = (char*) malloc(sizeof(char)*(len+1));
-    strcpy(new_word, "\0");
     if (len > 1){
+        char* new_word = (char*) malloc(sizeof(char)*(len+1));
+        strcpy(new_word, "\0");
         for (int i = 0; i < len; ++i) {
             if (i == pos){
                 strncat(new_word, &word[i+1], 1);
@@ -135,9 +140,9 @@ char* swap_with_consecutive_char(char* word, int pos){
 
 char* replace_char_by(char* word, int pos, char ch){
     unsigned long len = strlen(word);
-    char* new_word = (char*) malloc(sizeof(char)*(len+1));
-    strcpy(new_word, "\0");
     if (len > 0){
+        char* new_word = (char*) malloc(sizeof(char)*(len+1));
+        strcpy(new_word, "\0");
         for (int i = 0; i < len; ++i) {
             if (i == pos){
                 strncat(new_word, &ch, 1);
